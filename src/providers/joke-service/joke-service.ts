@@ -8,15 +8,7 @@ export class JokeServiceProvider {
 
   jokes: Joke[];
   constructor(private storage: Storage) {
-    this.storage.get('jokes').then((val) => {
-      if(val){
-        this.jokes = val;
-      } else {
-        this.jokes = [];
-        this.storage.set('jokes', this.jokes);
-      }
-    });
-    /*this.jokes = [
+    this.jokes = [
       { id:'xyz',
         setup:'A horse walks into a bar',
         punchline: 'The bartender says why the long face' },
@@ -26,7 +18,7 @@ export class JokeServiceProvider {
       { id:'zzxx',
         setup:'What is the difference between a snowman and a snowwoman?',
         punchline: 'Snowballs.' }
-    ];*/
+    ];
 
   }
 
