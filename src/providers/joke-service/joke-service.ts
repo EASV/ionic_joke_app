@@ -6,7 +6,7 @@ import {Observable} from 'rxjs/Observable';
 export class JokeServiceProvider {
 
   jokes: Joke[];
-  constructor(private storage: Storage) {
+  constructor() {
     this.jokes = [
       { id:'xyz',
         setup:'A horse walks into a bar',
@@ -33,7 +33,6 @@ export class JokeServiceProvider {
     return Observable.create( observable => {
       joke.id = Date.now().toString();
       this.jokes.push(joke);
-      this.storage.set('jokes', this.jokes);
       observable.next(joke);
       observable.complete();
     });
