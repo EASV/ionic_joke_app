@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Joke} from '../../models/joke';
 import {Observable} from 'rxjs/Observable';
-import {Storage} from '@ionic/storage';
 
 @Injectable()
 export class JokeServiceProvider {
