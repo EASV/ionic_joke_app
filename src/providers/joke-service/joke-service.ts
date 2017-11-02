@@ -1,40 +1,71 @@
 import { Injectable } from '@angular/core';
 import {Joke} from '../../models/joke';
 import {Observable} from 'rxjs/Observable';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class JokeServiceProvider {
 
-  jokes: Joke[];
-  constructor() {
-    this.jokes = [
-      { id:'xyz',
-        setup:'A horse walks into a bar',
-        punchline: 'The bartender says why the long face' },
-      { id:'zyx',
-        setup:'Anton, my son, do you think I’m a bad mother?',
-        punchline: 'My name is Paul.' },
-      { id:'zzxx',
-        setup:'What is the difference between a snowman and a snowwoman?',
-        punchline: 'Snowballs.' }
-    ];
+  constructor(private storage: Storage) {}
 
+  //key   | value
+  //jokes | joke[]
+  //snakes| snake[]
+  //time | 'now'
+
+  getJokes() :Observable<Joke[]> {
+    return Observable.create( observable => {
+      this.storage.get('jokes').then(jokes => {
+        if(!jokes){
+          jokes = [
+            { id:'xyz',
+              setup:'A horse walks into a bar',
+              punchline: 'The bartender says why the long face' },
+            { id:'zyx',
+              setup:'Anton, my son, do you think I’m a bad mother?',
+              punchline: 'My name is Paul.' },
+            { id:'zzxx',
+              setup:'What is the difference between a snowman and a snowwoman?',
+              punchline: 'Snowballs.' }
+          ];
+          this.storage.set('jokes', jokes);
+        }
+        observable.next(jokes);
+        observable.complete();
+      });
+   })
+  }
+
+  setJokes(jokes: Joke[]): Observable<Joke[]> {
+    return Observable.create( observable => {
+      this.storage.set('jokes', jokes).then(storedJokes => {
+        observable.next(storedJokes);
+        observable.complete();
+      });
+    });
   }
 
   getRandomJoke() :Observable<Joke> {
-    let random = Math.floor(Math.random() * (this.jokes.length));
     return Observable.create( observable => {
-      observable.next(this.jokes[random]);
-      observable.complete();
+      this.getJokes().subscribe(jokes => {
+        let random = Math.floor(Math.random() * (jokes.length));
+        observable.next(jokes[random]);
+        observable.complete();
+      })
+
     })
   }
 
   createJoke(joke: Joke): Observable<Joke> {
     return Observable.create( observable => {
-      joke.id = Date.now().toString();
-      this.jokes.push(joke);
-      observable.next(joke);
-      observable.complete();
+      this.getJokes().subscribe(jokesDB => {
+        joke.id = Date.now().toString();
+        jokesDB.push(joke);
+        this.setJokes(jokesDB).subscribe(() => {
+          observable.next(joke);
+          observable.complete();
+        });
+      });
     });
   }
 }
