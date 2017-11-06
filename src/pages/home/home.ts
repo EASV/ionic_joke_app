@@ -10,8 +10,6 @@ import { JokeServiceProvider } from '../../providers/joke-service/joke-service';
 export class HomePage {
 
   joke: Joke;
-  setupProp = '';
-  punchlineProp = '';
   constructor(public navCtrl: NavController,
               private jokeService: JokeServiceProvider) {
     this.jokeService.getRandomJoke().subscribe(randomJoke => {
@@ -23,15 +21,5 @@ export class HomePage {
     this.jokeService.getRandomJoke().subscribe(randomJoke => {
       this.joke = randomJoke;
     });
-  }
-
-  create() {
-    this.jokeService.createJoke({ setup: this.setupProp,
-                                       punchline: this.punchlineProp})
-      .subscribe(createdJoke => {
-        this.joke = createdJoke;
-        this.setupProp = '';
-        this.punchlineProp = '';
-      });
   }
 }
