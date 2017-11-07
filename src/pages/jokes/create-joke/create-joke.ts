@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import {JokeServiceProvider} from "../../providers/joke-service/joke-service";
+import {JokeServiceProvider} from "../../../providers/joke-service/joke-service";
 
 /**
  * Generated class for the CreateJokePage page.

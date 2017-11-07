@@ -9,13 +9,17 @@ import { HomePage } from '../pages/home/home';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { JokeServiceProvider } from '../providers/joke-service/joke-service';
-import { CreateJokePage } from '../pages/create-joke/create-joke';
+import { CreateJokePage } from '../pages/jokes/create-joke/create-joke';
+import {ListJokePage} from '../pages/jokes/list-joke/list-joke';
+import {DetailsJokePage} from '../pages/jokes/details-joke/details-joke';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    CreateJokePage
+    CreateJokePage,
+    ListJokePage,
+    DetailsJokePage
   ],
   imports: [
     BrowserModule,
@@ -26,7 +30,9 @@ import { CreateJokePage } from '../pages/create-joke/create-joke';
   entryComponents: [
     MyApp,
     HomePage,
-    CreateJokePage
+    CreateJokePage,
+    ListJokePage,
+    DetailsJokePage
   ],
   providers: [
     StatusBar,
