@@ -14,5 +14,27 @@
 
 
 <ion-content padding>
-
+  <ion-list *ngIf="joke">
+    <ion-item>
+      <ion-textarea
+          rows="4"
+          type="text"
+          placeholder="Setup"
+          [(ngModel)]="joke.setup"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-textarea
+        rows="4"
+        type="text"
+        placeholder="Punchline"
+        [(ngModel)]="joke.punchline"></ion-textarea>
+    </ion-item>
+    <button
+      ion-button
+      color="danger"
+      outline
+      (click)="delete()">Delete</button>
+    <button ion-button color="dark" outline>Update</button>
+  </ion-list>
+  <h5 *ngIf="!joke">No joke found!!</h5>
 </ion-content>

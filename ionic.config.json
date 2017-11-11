@@ -1,6 +1,6 @@
 {
   "name": "jokeApp",
-  "app_id": "",
+  "app_id": "14777f2d",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

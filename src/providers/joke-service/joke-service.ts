@@ -13,6 +13,18 @@ export class JokeServiceProvider {
   //snakes| snake[]
   //time | 'now'
 
+  delete(id: string) :Observable<Joke[]> {
+    return Observable.create( observable => {
+      this.getJokes().subscribe(jokes => {
+        let newJokes = jokes.filter(j => j.id !== id);
+        this.setJokes(newJokes).subscribe(jokesAfterDelete => {
+          observable.next(jokesAfterDelete);
+          observable.complete();
+        });
+      });
+    });
+  }
+
   getJokes() :Observable<Joke[]> {
     return Observable.create( observable => {
       this.storage.get('jokes').then(jokes => {
@@ -31,6 +43,7 @@ export class JokeServiceProvider {
           this.storage.set('jokes', jokes);
         }
         observable.next(jokes);
+        observable.next('smnale');
         observable.complete();
       });
    })

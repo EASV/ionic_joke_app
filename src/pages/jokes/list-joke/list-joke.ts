@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {Joke} from '../../../models/joke';
 import {JokeServiceProvider} from '../../../providers/joke-service/joke-service';
-
+import {DetailsJokePage} from '../details-joke/details-joke';
 
 /**
  * Generated class for the ListJokePage page.
@@ -25,13 +25,17 @@ export class ListJokePage {
   }
 
   jokeSelected(joke: Joke) {
-    console.log('joke', joke);
+    this.navCtrl.push(DetailsJokePage, {joke: joke})
   }
 
   ionViewWillEnter() {
-    this.jokeService.getJokes().subscribe(jokes => {
-      this.jokes = jokes;
-    });
+    this.jokeService
+      .getJokes()
+      .subscribe(jokes => {
+            this.jokes = jokes;
+        },error2 => {},
+          () => {}
+        );
   }
 
 }

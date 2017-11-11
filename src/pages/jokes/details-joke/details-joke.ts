@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import {Joke} from '../../../models/joke';
+import {JokeServiceProvider} from '../../../providers/joke-service/joke-service';
 
 /**
  * Generated class for the DetailsJokePage page.
@@ -14,7 +16,19 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class DetailsJokePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  joke: Joke;
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private jokeService: JokeServiceProvider) {
+    this.joke = this.navParams.get('joke');
+    console.log('joke', this.joke);
+  }
+
+  delete() {
+    this.jokeService.delete(this.joke.id)
+      .subscribe(jokes => {
+        console.log('deleted', jokes);
+      })
   }
 
   ionViewDidLoad() {
