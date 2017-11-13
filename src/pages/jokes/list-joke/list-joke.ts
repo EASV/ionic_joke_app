@@ -33,9 +33,7 @@ export class ListJokePage {
       .getJokes()
       .subscribe(jokes => {
             this.jokes = jokes;
-        },error2 => {},
-          () => {}
-        );
+        });
   }
 
 }

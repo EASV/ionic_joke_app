@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {AlertController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {Joke} from '../../../models/joke';
 import {JokeServiceProvider} from '../../../providers/joke-service/joke-service';
 
@@ -19,16 +19,42 @@ export class DetailsJokePage {
   joke: Joke;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private jokeService: JokeServiceProvider) {
+              private jokeService: JokeServiceProvider,
+              private toastCtrl: ToastController,
+              private alertctrl: AlertController) {
     this.joke = this.navParams.get('joke');
     console.log('joke', this.joke);
   }
 
   delete() {
-    this.jokeService.delete(this.joke.id)
-      .subscribe(jokes => {
-        console.log('deleted', jokes);
-      })
+    let alert = this.alertctrl.create({
+      title: 'Sure?',
+      message: 'Are you sure you want to delete the Joke?',
+      buttons: [{
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          console.log('cancelled');
+        }
+      }, {
+        text: 'Delete',
+        handler: () => {
+          //Ask if he wants to delete!!
+          this.jokeService.delete(this.joke.id)
+            .subscribe(() => {
+              this.navCtrl.pop().then(() => {
+                let toast = this.toastCtrl.create({
+                  message: 'Joke Deleted',
+                  duration: 3000,
+                  position: 'bottom'
+                });
+                toast.present();
+              });
+            });
+        }
+      }]
+    });
+    alert.present();
   }
 
   ionViewDidLoad() {

@@ -15,10 +15,10 @@ export class JokeServiceProvider {
 
   delete(id: string) :Observable<Joke[]> {
     return Observable.create( observable => {
-      this.getJokes().subscribe(jokes => {
-        let newJokes = jokes.filter(j => j.id !== id);
-        this.setJokes(newJokes).subscribe(jokesAfterDelete => {
-          observable.next(jokesAfterDelete);
+      this.getJokes().subscribe( allJokes => {
+        let allJokesExceptId = allJokes.filter(j => j.id !== id);
+        this.setJokes(allJokesExceptId).subscribe(() => {
+          observable.next(allJokesExceptId);
           observable.complete();
         });
       });
@@ -43,7 +43,6 @@ export class JokeServiceProvider {
           this.storage.set('jokes', jokes);
         }
         observable.next(jokes);
-        observable.next('smnale');
         observable.complete();
       });
    })
