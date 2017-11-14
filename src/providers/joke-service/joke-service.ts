@@ -13,6 +13,23 @@ export class JokeServiceProvider {
   //snakes| snake[]
   //time | 'now'
 
+  update(joke: Joke) :Observable<Joke> {
+    return Observable.create( observable => {
+      this.getJokes().subscribe( allJokes => {
+        let jokeFound = allJokes.find(j => j.id === joke.id);
+        if(jokeFound) {
+          jokeFound.punchline = joke.punchline;
+          jokeFound.setup = joke.setup;
+          this.setJokes(allJokes).subscribe(() => {
+            observable.next(jokeFound);
+            observable.complete();
+          });
+        }
+      })
+
+    });
+  }
+
   delete(id: string) :Observable<Joke[]> {
     return Observable.create( observable => {
       this.getJokes().subscribe( allJokes => {

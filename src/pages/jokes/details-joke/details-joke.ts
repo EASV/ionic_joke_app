@@ -23,7 +23,18 @@ export class DetailsJokePage {
               private toastCtrl: ToastController,
               private alertctrl: AlertController) {
     this.joke = this.navParams.get('joke');
-    console.log('joke', this.joke);
+  }
+
+  update() {
+    this.jokeService.update(this.joke)
+      .subscribe(joke => {
+        let toast = this.toastCtrl.create({
+          message: 'Joke Updated',
+          duration: 1000,
+          position: 'top'
+        });
+        toast.present();
+      });
   }
 
   delete() {

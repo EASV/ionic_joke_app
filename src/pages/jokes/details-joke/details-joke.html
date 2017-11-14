@@ -34,7 +34,11 @@
       color="danger"
       outline
       (click)="delete()">Delete</button>
-    <button ion-button color="dark" outline>Update</button>
+    <button
+      ion-button
+      color="dark"
+      outline
+      (click)="update()">Update</button>
   </ion-list>
   <h5 *ngIf="!joke">No joke found!!</h5>
 </ion-content>
