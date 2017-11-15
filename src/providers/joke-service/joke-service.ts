@@ -16,7 +16,7 @@ export class JokeServiceProvider {
   update(joke: Joke) :Observable<Joke> {
     return Observable.create( observable => {
       this.getJokes().subscribe( allJokes => {
-        let jokeFound = allJokes.find(j => j.id === joke.id);
+        var jokeFound = allJokes.find(j => j.id === joke.id);
         if(jokeFound) {
           jokeFound.punchline = joke.punchline;
           jokeFound.setup = joke.setup;
