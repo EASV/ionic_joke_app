@@ -2,11 +2,17 @@ import { Injectable } from '@angular/core';
 import {Joke} from '../../models/joke';
 import {Observable} from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
+import {AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firestore';
 
 @Injectable()
 export class JokeServiceProvider {
 
-  constructor(private storage: Storage) {}
+  private jokesCollection: AngularFirestoreCollection<Joke>;
+  constructor(private storage: Storage,
+              private db: AngularFirestore) {
+    this.jokesCollection = this.db.collection<Joke>('jokes');
+
+  }
 
   //key   | value
   //jokes | joke[]
@@ -42,8 +48,29 @@ export class JokeServiceProvider {
     });
   }
 
-  getJokes() :Observable<Joke[]> {
+  getFilteredJokes(searchText: string): Observable<Joke[]> {
     return Observable.create( observable => {
+      this.getJokes().subscribe(allJokes => {
+        if(searchText && searchText.length > 0){
+          let filteredJokes = allJokes
+            .filter(j => j.punchline.toLowerCase().indexOf(searchText.toLowerCase()) > -1 ||
+              j.setup.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
+          observable.next(filteredJokes);
+        }
+        else{
+          observable.next(allJokes);
+        }
+
+        observable.complete();
+      });
+    });
+  }
+
+  getJokes() :Observable<Joke[]> {
+    return this.jokesCollection
+      .valueChanges();
+
+    /*return Observable.create( observable => {
       this.storage.get('jokes').then(jokes => {
         if(!jokes){
           jokes = [
@@ -57,12 +84,18 @@ export class JokeServiceProvider {
               setup:'What is the difference between a snowman and a snowwoman?',
               punchline: 'Snowballs.' }
           ];
-          this.storage.set('jokes', jokes);
+          this.setJokes(jokes).subscribe(jokesSaved => {
+            observable.next(jokesSaved);
+            observable.complete();
+          });
         }
-        observable.next(jokes);
-        observable.complete();
+        else {
+          observable.next(jokes);
+          observable.complete();
+        }
+
       });
-   })
+   })*/
   }
 
   setJokes(jokes: Joke[]): Observable<Joke[]> {
@@ -87,14 +120,18 @@ export class JokeServiceProvider {
 
   createJoke(joke: Joke): Observable<Joke> {
     return Observable.create( observable => {
-      this.getJokes().subscribe(jokesDB => {
+      /*this.getJokes().subscribe(jokesDB => {
         joke.id = Date.now().toString();
         jokesDB.push(joke);
         this.setJokes(jokesDB).subscribe(() => {
           observable.next(joke);
           observable.complete();
         });
-      });
+      });*/
+      this.jokesCollection.add(joke)
+        .then(jokeReturned => {
+          console.log(jokeReturned);
+        });
     });
   }
 }

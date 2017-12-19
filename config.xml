@@ -94,4 +94,5 @@
         <variable name="XWALK_MODE" value="embedded" />
         <variable name="XWALK_MULTIPLEAPK" value="true" />
     </plugin>
+    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.1" />
 </widget>

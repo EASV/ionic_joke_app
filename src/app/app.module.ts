@@ -12,6 +12,21 @@ import { JokeServiceProvider } from '../providers/joke-service/joke-service';
 import { CreateJokePage } from '../pages/jokes/create-joke/create-joke';
 import {ListJokePage} from '../pages/jokes/list-joke/list-joke';
 import {DetailsJokePage} from '../pages/jokes/details-joke/details-joke';
+import {AngularFireModule} from 'angularfire2';
+import {AngularFirestoreModule} from 'angularfire2/firestore';
+import {LocalNotifications} from '@ionic-native/local-notifications';
+
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: "AIzaSyB_c8Dcml_XXsYk6tyXIDoeOcEFChVnqyI",
+    authDomain: "jokedb-79881.firebaseapp.com",
+    databaseURL: "https://jokedb-79881.firebaseio.com",
+    projectId: "jokedb-79881",
+    storageBucket: "jokedb-79881.appspot.com",
+    messagingSenderId: "636285680558"
+  }
+};
 
 @NgModule({
   declarations: [
@@ -24,7 +39,10 @@ import {DetailsJokePage} from '../pages/jokes/details-joke/details-joke';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -38,7 +56,8 @@ import {DetailsJokePage} from '../pages/jokes/details-joke/details-joke';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    JokeServiceProvider
+    JokeServiceProvider,
+    LocalNotifications
   ]
 })
 export class AppModule {}

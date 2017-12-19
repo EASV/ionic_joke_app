@@ -18,9 +18,18 @@ import {DetailsJokePage} from '../details-joke/details-joke';
 export class ListJokePage {
 
   jokes: Joke[];
+  searchText: string;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private jokeService: JokeServiceProvider) {
+
+  }
+
+  search(){
+    this.jokeService.getFilteredJokes(this.searchText)
+      .subscribe(filteredJokes => {
+        this.jokes = filteredJokes
+      });
 
   }
 
@@ -33,6 +42,7 @@ export class ListJokePage {
       .getJokes()
       .subscribe(jokes => {
             this.jokes = jokes;
+            console.log('jokes: ', this.jokes);
         });
   }
 
